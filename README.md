@@ -85,47 +85,61 @@ import { SomeType } from './some-module';
 
 ## Broken Code Examples
 
-This repo also includes intentionally broken code to test Tern's ability to detect and flag problematic transformations.
+This repo includes **realistic** broken code that exists in production codebases. These are all **valid JavaScript that runs**, but have logic errors, edge case bugs, or issues that transformations might expose or worsen.
+
+> **Important**: No syntax errors! Everything here compiles and runs. These represent the types of bugs that actually make it to production.
 
 ### Broken React Components
 **File**: `src/components/BrokenComponent.jsx`
 
-Examples include:
-- **Syntax errors**: Missing braces, incomplete code
-- **Logic errors**: Using findDOMNode before mount, missing null checks
-- **Ambiguous patterns**: Components that render different elements conditionally
-- **Untransformable patterns**: Using findDOMNode to access child component internals
-- **Type errors**: Missing prop validation, undefined checks
+All valid React code that runs in production, but has bugs:
+
+- **Logic errors**: Using findDOMNode before component mounts (returns null)
+- **Runtime errors**: Missing null checks that crash in edge cases (when `hidden=true`)
+- **Ambiguous patterns**: Components that render different elements conditionally (which one gets the ref?)
+- **Complex queries**: Using findDOMNode with querySelector (can't transform to single ref)
+- **Child access**: Reaching into child component DOM (needs forwardRef to fix)
+- **Missing validation**: Crashes when required props are omitted
+- **DOM assumptions**: Code that breaks when render structure changes
+- **Race conditions**: Reading DOM before state updates complete
 
 ### Broken JSDoc Types
 **File**: `src/types/brokenTypes.js`
 
-Examples include:
-- **Syntax errors**: Missing/extra braces, invalid type syntax
-- **Logic errors**: Type mismatches (typedef says string but code uses it as number)
+All valid JavaScript (JSDoc is just comments!), but causes TypeScript/tooling issues:
+
+- **Missing commas**: JSDoc parse errors (JS doesn't care)
+- **Invalid references**: References to non-existent types
+- **Type mismatches**: JSDoc says `string` but code uses it as `number`
 - **Circular references**: Types that reference themselves
-- **Duplicate properties**: Same property defined multiple times
-- **Invalid closure syntax**: Malformed union types, empty generics
+- **Duplicate properties**: Same property defined multiple times with different types
+- **Mixed syntax**: Inconsistent use of closure vs TypeScript JSDoc syntax
+- **Missing generics**: `Array` and `Map` without type parameters
+- **Function syntax**: Mixing closure `function(x): y` with TS `(x) => y` syntax
 
 ### Broken Closure API Usage
 **File**: `src/utils/brokenHelpers.js`
 
-Examples include:
-- **Null handling issues**: Code that works with goog.array.filter(null) but crashes with Array.filter(null)
-- **Type mismatches**: Passing wrong types that goog APIs handle but native APIs don't
-- **Logic errors**: Backwards logic, redundant operations
-- **Side effects**: Modifying arrays during iteration
-- **In-place mutations**: Using APIs that modify in-place vs returning new values
-- **Performance issues**: Inefficient patterns that get worse after transformation
+All valid JavaScript that runs in production, but has subtle bugs:
+
+- **Null handling**: `goog.array.filter(null)` works, `Array.filter(null)` crashes
+- **Undefined vs null**: `goog.isDefAndNotNull` checks both, `!== null` only checks one
+- **Array-like objects**: goog APIs handle NodeList, native methods don't
+- **In-place mutations**: `goog.array.removeDuplicates` modifies original array
+- **Logic bugs**: Backwards checks, redundant operations (already broken!)
+- **Missing null checks**: `goog.isDef(null)` returns true, then code crashes
+- **Iteration mutations**: Modifying arrays while iterating (classic bug)
+- **Performance**: O(n*m) nested loops that should use Set
+- **Type coercion**: Different behavior when wrong types are passed
 
 ### Why These Matter
 
-These broken examples help test:
+These realistic broken examples test:
 
-1. **Detection**: Can Tern identify code that's already broken?
-2. **Preservation**: Does transformation make broken code worse?
-3. **Flagging**: Can AI reviewers catch subtle bugs that mechanical checks miss?
-4. **Edge cases**: Null handling, type coercion, behavioral differences
+1. **Detection**: Can Tern/AI identify code that's already broken?
+2. **Preservation vs Fix**: Does transformation preserve bugs or accidentally fix them?
+3. **Behavioral changes**: Can AI reviewers catch subtle differences (null vs undefined)?
+4. **Edge cases exposed**: Transformations might expose bugs that rarely trigger in production
 
 ## How to Use with Tern
 
