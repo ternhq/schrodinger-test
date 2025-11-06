@@ -92,16 +92,26 @@ This repo includes **realistic** broken code that exists in production codebases
 ### Broken React Components
 **File**: `src/components/BrokenComponent.jsx`
 
-All valid React code that runs in production, but has bugs:
+All valid React code that runs in production, but has bugs. Includes **hard transformation cases**:
 
+**Simple bugs (but realistic)**:
 - **Logic errors**: Using findDOMNode before component mounts (returns null)
 - **Runtime errors**: Missing null checks that crash in edge cases (when `hidden=true`)
-- **Ambiguous patterns**: Components that render different elements conditionally (which one gets the ref?)
-- **Complex queries**: Using findDOMNode with querySelector (can't transform to single ref)
-- **Child access**: Reaching into child component DOM (needs forwardRef to fix)
 - **Missing validation**: Crashes when required props are omitted
-- **DOM assumptions**: Code that breaks when render structure changes
 - **Race conditions**: Reading DOM before state updates complete
+- **DOM assumptions**: Code that breaks when render structure changes
+
+**Hard transformation cases** (can't easily auto-fix):
+- ✓ **Multiple elements**: querySelector for multiple `<input>`, multiple `<img>` tags
+- ✓ **Reaching into children**: Using findDOMNode to access child component internals
+- ✓ **Conditional/dynamic**: Renders different element types (`<div>`, `<span>`, `<p>`) based on props
+- ✓ **3rd party components**: findDOMNode on components without forwardRef (can't add ref)
+- ✓ **Fragment returns**: Component returns `<>` with multiple root elements
+- ✓ **Portals**: DOM rendered outside component tree
+- ✓ **Dynamic lists**: Needs ref array or callback refs for `.map()`
+- ✓ **HOC wrapped**: findDOMNode through Higher-Order Component wrapper
+- ✓ **Stored references**: DOM node saved to instance variable, used in multiple places
+- ✓ **Conditional types**: Different element types with different capabilities (focusable vs not)
 
 ### Broken JSDoc Types
 **File**: `src/types/brokenTypes.js`
