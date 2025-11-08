@@ -4,7 +4,12 @@ A realistic legacy codebase for demonstrating Tern's code transformation capabil
 
 ## Running the App
 
-Open `public/index.html` in your browser to see the app running. All components use legacy patterns (findDOMNode, Closure APIs, etc.) that need migration.
+```bash
+npm install
+npm run dev
+```
+
+Then open http://localhost:3000 in your browser. All components use legacy patterns (findDOMNode, Closure APIs, etc.) that need migration.
 
 ## What's Inside
 
