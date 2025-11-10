@@ -11,6 +11,33 @@ npm run dev
 
 Then open http://localhost:3000 in your browser. All components use legacy patterns (findDOMNode, Closure APIs, etc.) that need migration.
 
+## Validation Commands
+
+Use these to check code quality before and after transformations:
+
+```bash
+# Run ESLint (17 errors currently)
+npm run lint
+
+# Run TypeScript type checking on JSDoc (48+ errors currently)
+npm run typecheck
+
+# Build the app with Vite (succeeds despite type errors)
+npm run build
+
+# Run all validations
+npm run validate
+```
+
+### Current Baseline
+
+**Before any Tern transformations:**
+- **ESLint**: 17 errors (unused imports, redeclared globals)
+- **TypeScript**: 48+ type errors (invalid types, missing null checks, goog not defined)
+- **Build**: ✅ Succeeds
+
+These errors demonstrate the issues in the legacy codebase that Tern should either fix or flag for manual review.
+
 ## What's Inside
 
 This is a **working application** with intentional legacy code patterns:

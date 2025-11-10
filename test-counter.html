@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Counter Test</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { Component } = React;
+    const { createRoot } = ReactDOM;
+
+    class Counter extends Component {
+      state = { count: 0 };
+
+      handleClick = () => {
+        this.setState({ count: this.state.count + 1 });
+
+        const node = ReactDOM.findDOMNode(this);
+        if (node) {
+          console.log('DOM says count is:', node.textContent);
+          console.log('State says count is:', this.state.count + 1);
+        }
+      }
+
+      render() {
+        return React.createElement('div', { onClick: this.handleClick }, 'Count: ' + this.state.count);
+      }
+    }
+
+    const root = createRoot(document.getElementById('root'));
+    root.render(React.createElement(Counter));
+  </script>
+</body>
+</html>
