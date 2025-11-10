@@ -1,5 +1,3 @@
-/* global goog */
-
 export function filterActiveUsers(users) {
   return goog.array.filter(users, function(user) {
     return user.isActive;

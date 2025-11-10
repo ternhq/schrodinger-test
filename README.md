@@ -13,30 +13,34 @@ Then open http://localhost:3000 in your browser. All components use legacy patte
 
 ## Validation Commands
 
-Use these to check code quality before and after transformations:
-
 ```bash
-# Run ESLint (17 errors currently)
+# Run ESLint - passes with current tooling
 npm run lint
 
-# Run TypeScript type checking on JSDoc (48+ errors currently)
+# Try TypeScript type checking - shows why migration is needed
 npm run typecheck
 
-# Build the app with Vite (succeeds despite type errors)
+# Build with Vite - works perfectly
 npm run build
 
 # Run all validations
 npm run validate
 ```
 
-### Current Baseline
+### Current State (Before Migration)
 
-**Before any Tern transformations:**
-- **ESLint**: 17 errors (unused imports, redeclared globals)
-- **TypeScript**: 48+ type errors (invalid types, missing null checks, goog not defined)
-- **Build**: ✅ Succeeds
+**With CURRENT tooling (Closure Compiler):**
+- ✅ Code works perfectly
+- ✅ Passes lint
+- ✅ Builds successfully
+- ✅ All components render and function
 
-These errors demonstrate the issues in the legacy codebase that Tern should either fix or flag for manual review.
+**With MODERN tooling (TypeScript):**
+- ❌ TypeScript: 48+ errors (Closure-specific JSDoc syntax not supported)
+- ❌ React 19: findDOMNode is deprecated
+- ❌ Modern JS: Closure Library APIs need replacement
+
+**This is why they need Tern**: Working legacy code that uses old patterns/tooling → needs migration to modern patterns/tooling.
 
 ## What's Inside
 

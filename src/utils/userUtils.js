@@ -1,5 +1,3 @@
-/* global goog */
-
 export function findUserById(users, id) {
   return goog.array.find(users, function(user) {
     return user.id === id;

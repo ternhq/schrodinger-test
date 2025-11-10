@@ -31,7 +31,10 @@ export default [
     rules: {
       'react/prop-types': 'off',
       'react/react-in-jsx-scope': 'off',
+      'react/jsx-uses-react': 'error',
+      'react/jsx-uses-vars': 'error',
       'no-undef': 'error',
+      'no-unused-vars': 'error',
     },
     settings: {
       react: {

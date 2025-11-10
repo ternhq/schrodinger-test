@@ -1,5 +1,3 @@
-/* global goog */
-
 export function getItemValues(data) {
   if (goog.isDef(data)) {
     return goog.array.map(data.items, function(item) {

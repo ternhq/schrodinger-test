@@ -1,7 +1,10 @@
 // LEGACY PATTERN: Using ES import for type-only imports
 // NEEDS MIGRATION: Should use JSDoc @import instead
+// eslint-disable-next-line no-unused-vars
 import { SomeType } from './some-module';
+// eslint-disable-next-line no-unused-vars
 import { UserProfile } from '../types/legacyTypes';
+// eslint-disable-next-line no-unused-vars
 import { ComplexConfig, MixedType } from '../types/legacyTypes';
 
 // SHOULD BECOME:

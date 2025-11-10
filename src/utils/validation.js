@@ -1,5 +1,3 @@
-/* global goog */
-
 export function processValue(value) {
   if (goog.isDefAndNotNull(value)) {
     return value * 2;
